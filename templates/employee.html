@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>填寫員工資料</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>填寫員工資料</h1>
+    <form method="POST">
+        <label for="name">員工姓名:</label>
+        <input type="text" name="name" required><br>
+
+        <label for="gender">性別:</label>
+        <select name="gender" required>
+            <option value="男">男</option>
+            <option value="女">女</option>
+        </select><br>
+
+        <label for="salary">薪資:</label>
+        <input type="number" name="salary" required><br>
+
+        <label for="address">員工地址:</label>
+        <input type="text" name="address" required><br>
+
+        <label for="phone">電話:</label>
+        <input type="text" name="phone" required><br>
+
+        <label for="email">電子郵件:</label>
+        <input type="email" name="email" required><br>
+
+        <label for="company_id">選擇公司:</label>
+        <select name="company_id" required>
+            {% for company in companies %}
+                <option value="{{ company.id }}">{{ company.name }}</option>
+            {% endfor %}
+        </select><br>
+
+        <button type="submit">提交</button>
+    </form>
+    <a href="{{ url_for('index') }}">返回首頁</a>
+</body>
+</html>

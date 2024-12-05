@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公司資料</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        td {
+            background-color: #fafafa;
+        }
+        .company-table {
+            margin-top: 20px;
+        }
+        .company-table th, .company-table td {
+            text-align: center;
+        }
+        .company-table td {
+            font-size: 14px;
+        }
+        .company-table th {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>現有公司資料</h1>
+
+    <form method="POST">
+        <label for="name">公司名稱:</label>
+        <input type="text" name="name" required><br>
+        
+        <label for="address">公司地址:</label>
+        <input type="text" name="address" required><br>
+
+        <label for="phone">電話:</label>
+        <input type="text" name="phone" required><br>
+
+        <label for="tax_id">統一編號:</label>
+        <input type="text" name="tax_id" required><br>
+
+        <button type="submit">提交</button>
+    </form>
+
+    <h2>現有公司列表</h2>
+    <table class="company-table">
+        <thead>
+            <tr>
+                <th>公司名稱</th>
+                <th>公司地址</th>
+                <th>電話</th>
+                <th>統一編號</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for company in companies %}
+            <tr>
+                <td>{{ company.name }}</td>
+                <td>{{ company.address }}</td>
+                <td>{{ company.phone }}</td>
+                <td>{{ company.tax_id }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('index') }}">返回首頁</a>
+</body>
+</html>

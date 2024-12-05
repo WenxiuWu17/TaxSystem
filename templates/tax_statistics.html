@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>稅務統計</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>稅務統計</h1>
+    
+    <form method="POST">
+        <label for="company_id">選擇公司：</label>
+        <select id="company_id" name="company_id" onchange="this.form.submit()">
+            <option value="">選擇公司</option>
+            {% for company in companies %}
+                <option value="{{ company.id }}" {% if company.id == selected_company_id %}selected{% endif %}>
+                    {{ company.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if selected_company %}
+    <h2>{{ selected_company.name }} 的員工所得稅清單</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>員工姓名</th>
+                <th>應稅所得 (元)</th>
+                <th>綜合所得稅金額 (元)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stat in tax_statistics %}
+                <tr>
+                    <td>{{ stat.employee_name }}</td>
+                    <td>{{ stat.taxable_income }}</td>
+                    <td>{{ stat.tax_amount }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>所有員工綜合所得稅金額總計：{{ total_tax }} 元</h3>
+
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">返回首頁</a>
+</body>
+</html>
