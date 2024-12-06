@@ -7,32 +7,34 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'your_secret_key'  # 用於 flash 訊息
 db = SQLAlchemy(app)
 
-# 公司資料模型
+# 定義公司資料模型，對應資料庫中的 company 表
 class Company(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    address = db.Column(db.String(200), nullable=False)
-    phone = db.Column(db.String(50), nullable=False)
-    tax_id = db.Column(db.String(50), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)  # 主鍵 ID
+    name = db.Column(db.String(100), nullable=False)  # 公司名稱，必填
+    address = db.Column(db.String(200), nullable=False)  # 地址，必填
+    phone = db.Column(db.String(50), nullable=False)  # 電話號碼，必填
+    tax_id = db.Column(db.String(50), nullable=False)  # 統一編號，必填
 
-# 員工資料模型
+# 定義員工資料模型，對應資料庫中的 employee 表
 class Employee(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    gender = db.Column(db.String(10), nullable=False)
-    salary = db.Column(db.Integer, nullable=False)  
-    address = db.Column(db.String(200), nullable=False)
-    phone = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(100), nullable=False)
-    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)  # 主鍵 ID
+    name = db.Column(db.String(100), nullable=False)  # 員工姓名，必填
+    gender = db.Column(db.String(10), nullable=False)  # 性別，必填
+    salary = db.Column(db.Integer, nullable=False)  # 月薪，必填
+    address = db.Column(db.String(200), nullable=False)  # 地址，必填
+    phone = db.Column(db.String(50), nullable=False)  # 電話號碼，必填
+    email = db.Column(db.String(100), nullable=False)  # 電子郵件，必填
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'), nullable=False)  # 外鍵，對應公司 ID
     tax_amount = db.Column(db.Integer, nullable=True)  # 員工稅額
     taxable_income = db.Column(db.Integer, nullable=True)  # 員工應稅所得
 
+    # 定義與 Company 表的關聯，支持反向查詢
     company = db.relationship('Company', backref=db.backref('employees', lazy=True))
+
 
 # 初始化資料庫
 with app.app_context():
-    #db.drop_all()
+    #db.drop_all()# 如需重置資料庫，可解除註解此行
     db.create_all()
 
 # 首頁路由
@@ -70,7 +72,7 @@ def employee():
     if request.method == 'POST':
         name = request.form['name']
         gender = request.form['gender']
-        salary = int(request.form['salary'])  # 確保薪資為整數
+        salary = int(request.form['salary'])  
         address = request.form['address']
         phone = request.form['phone']
         email = request.form['email']
